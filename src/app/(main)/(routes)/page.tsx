@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
+import { UserButton } from '@clerk/nextjs';
 
 export default function Home() {
   return (
-    <main className="bg-slate-500">
-      <Button>K-DIscord</Button>
+    <main className="">
+      <UserButton afterSignOutUrl="/" />
     </main>
   );
 }

@@ -23,6 +23,8 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 import FileUpload from '../file-upload';
+import { createServer } from '@/actions/server.action';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -42,6 +44,8 @@ export default function InitialModal() {
     setIsMounted(true);
   }, []);
 
+  const router = useRouter();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,6 +58,17 @@ export default function InitialModal() {
 
   const onSubmit = async (values: FormValues) => {
     console.log(values);
+    try {
+      const result = await createServer(values);
+
+      console.log('서버 생성 : ', result);
+
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.log('서버 생성 실패', error);
+    }
   };
 
   if (!isMounted) {

@@ -1,7 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 import type { Metadata } from 'next';
-import { ThemeProvider } from '@/components/theme-provider';
+import ModalProvider from '@/components/providers/modal-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 export const metadata: Metadata = {
   title: 'K-Discord',
@@ -19,8 +20,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="ko" suppressHydrationWarning>
-        <body className="">
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <body className="bg-white dark:bg-[#313338]">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={false}
+            storageKey="discord-theme"
+          >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>

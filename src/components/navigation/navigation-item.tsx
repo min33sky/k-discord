@@ -34,6 +34,7 @@ export default function NavigationItem({
             params?.serverId === id ? 'h-[36px]' : 'h-[8px]',
           )}
         />
+
         <div
           className={cn(
             'relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden',
@@ -41,7 +42,7 @@ export default function NavigationItem({
               'bg-primary/10 text-primary rounded-[16px]',
           )}
         >
-          <Image fill src={imageUrl} alt="Channel" />
+          <Image fill src={imageUrl} alt="Channel image" />
         </div>
       </button>
     </ActionTooltip>

@@ -5,6 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 import prisma from '@/lib/db';
 import { MemberRole } from '@prisma/client';
 
+/**
+ * 새로운 서버를 생성한다.
+ * @param name 서버 이름
+ * @param imageUrl 서버 이미지 URL
+ *
+ */
 export async function createServer({
   name,
   imageUrl,
@@ -51,6 +57,37 @@ export async function createServer({
     return server;
   } catch (error: any) {
     console.log('[createServer] error : ', error);
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * 서버 초대 코드를 업데이트한다.
+ * @param serverId 서버 아이디
+ */
+export async function updateServerInviteCode(serverId: string) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to update a server');
+    }
+
+    const inviteCode = uuidv4();
+
+    const server = await prisma.server.update({
+      where: {
+        id: serverId,
+        profileId: profile.id,
+      },
+      data: {
+        inviteCode,
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log('[updateServerInviteCode] error : ', error);
     throw new Error(error.message);
   }
 }

@@ -1,5 +1,7 @@
 # K-Didcord
 
+Next13 (serverActions) + Clerk + Prisma + UploadThing
+
 ## Environment Variables
 
 ```bash

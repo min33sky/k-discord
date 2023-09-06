@@ -34,8 +34,9 @@ export default function ServerHeader({ server, role }: ServerHeaderProps) {
           <ChevronDown className="h-5 w-5 ml-auto" />
         </button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
-        {isModerator && (
+        {(isModerator || isAdmin) && (
           <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer">
             초대하기
             <UserPlus className="h-4 w-4 ml-auto" />

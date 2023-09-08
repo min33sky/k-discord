@@ -1,0 +1,17 @@
+import React from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { cn } from '@/lib/utils';
+
+interface UserAvatarProps {
+  src?: string;
+  className?: string;
+}
+
+export default function UserAvatar({ src, className }: UserAvatarProps) {
+  return (
+    <Avatar className={cn('h-7 w-7 md:h-10 md:w-10', className)}>
+      <AvatarImage src={src} alt="avatar" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  );
+}

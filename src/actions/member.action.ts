@@ -68,6 +68,40 @@ export async function updateMemberRole({
 export async function kickMember(serverId: string, memberId: string) {
   try {
     // TODO: 강퇴
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to kick a member');
+    }
+
+    const updatedServer = await prisma.server.update({
+      where: {
+        id: serverId,
+        profileId: profile.id,
+      },
+      data: {
+        members: {
+          deleteMany: {
+            id: memberId,
+            profileId: {
+              not: profile.id,
+            },
+          },
+        },
+      },
+      include: {
+        members: {
+          include: {
+            profile: true,
+          },
+          orderBy: {
+            role: 'asc',
+          },
+        },
+      },
+    });
+
+    return updatedServer;
   } catch (error: any) {
     console.log('[kickMember] error : ', error);
     throw new Error(error.message);

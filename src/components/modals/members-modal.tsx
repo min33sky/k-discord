@@ -42,7 +42,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { updateMemberRole } from '@/actions/member.action';
+import { kickMember, updateMemberRole } from '@/actions/member.action';
 import { MemberRole } from '@prisma/client';
 
 const roleIconMap = {
@@ -66,6 +66,12 @@ export default function MembersModal() {
       setLoadingId(memberId);
 
       // TODO: 서버에 요청을 보내서 멤버를 추방한다
+      const updatedServer = await kickMember(server.id, memberId);
+
+      router.refresh();
+      onOpen('members', {
+        server: updatedServer,
+      });
 
       console.log('멤버 추방에 성공했습니다');
     } catch (error) {

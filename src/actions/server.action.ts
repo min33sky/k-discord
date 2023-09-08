@@ -61,6 +61,48 @@ export async function createServer({
   }
 }
 
+interface UpdateServerProps {
+  serverId: string;
+  name: string;
+  imageUrl: string;
+}
+
+/**
+ * 서버를 업데이트한다.
+ * @param serverId 서버 아이디
+ * @param name 서버 이름
+ * @param imageUrl 서버 이미지 URL
+ */
+export async function updateServer({
+  imageUrl,
+  name,
+  serverId,
+}: UpdateServerProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to update a server');
+    }
+
+    const server = await prisma.server.update({
+      where: {
+        id: serverId,
+        profileId: profile.id,
+      },
+      data: {
+        imageUrl,
+        name,
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log('[updateServer] error : ', error);
+    throw new Error(error.message);
+  }
+}
+
 /**
  * 서버 초대 코드를 업데이트한다.
  * @param serverId 서버 아이디

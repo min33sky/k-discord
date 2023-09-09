@@ -3,7 +3,7 @@
 import { currentProfile } from '@/lib/current-profile';
 import { v4 as uuidv4 } from 'uuid';
 import prisma from '@/lib/db';
-import { MemberRole } from '@prisma/client';
+import { ChannelType, MemberRole } from '@prisma/client';
 
 /**
  * 새로운 서버를 생성한다.
@@ -130,6 +130,55 @@ export async function updateServerInviteCode(serverId: string) {
     return server;
   } catch (error: any) {
     console.log('[updateServerInviteCode] error : ', error);
+    throw new Error(error.message);
+  }
+}
+
+interface CreateChannelProps {
+  serverId: string;
+  name: string;
+  type: ChannelType;
+}
+
+export async function createChannel({
+  name,
+  serverId,
+  type,
+}: CreateChannelProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to create a channel');
+    }
+
+    //? 채널을 생성하려면 해당 서버를 업데이트하는 방식으로 구현해야 한다.
+    const updatedServer = await prisma.server.update({
+      where: {
+        id: serverId,
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          create: {
+            profileId: profile.id,
+            name,
+            type,
+          },
+        },
+      },
+    });
+
+    return updatedServer;
+  } catch (error: any) {
+    console.log('[createChannel] error : ', error);
     throw new Error(error.message);
   }
 }

@@ -71,8 +71,11 @@ export default function ServerHeader({ server, role }: ServerHeaderProps) {
           </DropdownMenuItem>
         )}
 
-        {isModerator && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
+        {(isModerator || isAdmin) && (
+          <DropdownMenuItem
+            onClick={() => onOpen('CREATE_CHANNEL', { server })}
+            className="px-3 py-2 text-sm cursor-pointer"
+          >
             채널 만들기
             <PlusCircle className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>

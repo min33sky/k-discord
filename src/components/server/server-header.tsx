@@ -83,14 +83,20 @@ export default function ServerHeader({ server, role }: ServerHeaderProps) {
         {isModerator && <DropdownMenuSeparator />}
 
         {isAdmin && (
-          <DropdownMenuItem className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen('DELETE_SERVER', { server })}
+            className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
+          >
             서버 삭제
             <Trash className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
 
         {!isAdmin && (
-          <DropdownMenuItem className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen('LEAVE_SERVER', { server })}
+            className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
+          >
             서버 나가기
             <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>

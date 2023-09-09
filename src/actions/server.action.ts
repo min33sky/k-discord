@@ -140,6 +140,12 @@ interface CreateChannelProps {
   type: ChannelType;
 }
 
+/**
+ * 채널을 생성한다.
+ * @param serverId 서버 아이디
+ * @param name 채널 이름
+ * @param type 채널 타입
+ */
 export async function createChannel({
   name,
   serverId,
@@ -179,6 +185,72 @@ export async function createChannel({
     return updatedServer;
   } catch (error: any) {
     console.log('[createChannel] error : ', error);
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * 서버 삭제하기
+ * @param serverId 서버 아이디
+ */
+export async function deleteServer(serverId: string) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to delete a server');
+    }
+
+    const deletedServer = await prisma.server.delete({
+      where: {
+        id: serverId,
+        profileId: profile.id,
+      },
+    });
+
+    return deletedServer;
+  } catch (error: any) {
+    console.log('[deleteServer] error : ', error);
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * 서버에서 나가기
+ * @param serverId 서버 아이디
+ */
+export async function leaveServer(serverId: string) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to leave a server');
+    }
+
+    const updatedServer = await prisma.server.update({
+      where: {
+        id: serverId,
+        profileId: {
+          not: profile.id, //? 서버 생성자가 아닌 경우에만 서버를 나갈 수 있다.
+        },
+        members: {
+          some: {
+            profileId: profile.id,
+          },
+        },
+      },
+      data: {
+        members: {
+          deleteMany: {
+            profileId: profile.id,
+          },
+        },
+      },
+    });
+
+    return updatedServer;
+  } catch (error: any) {
+    console.log('[leaveServer] error : ', error);
     throw new Error(error.message);
   }
 }

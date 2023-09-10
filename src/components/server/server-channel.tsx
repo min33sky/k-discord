@@ -13,6 +13,7 @@ import React from 'react';
 import ActionTooltip from '../action-tooltip';
 import { cn } from '@/lib/utils';
 import { useParams, useRouter } from 'next/navigation';
+import { useModal } from '@/hooks/useModalStore';
 
 interface ServerChannelProps {
   channel: Channel;
@@ -40,6 +41,7 @@ export default function ServerChannel({
 }: ServerChannelProps) {
   const router = useRouter();
   const params = useParams();
+  const { onOpen } = useModal();
 
   const Icon = iconMap[channel.type];
 
@@ -66,11 +68,17 @@ export default function ServerChannel({
       {/* 권한이 있는 맴버는 채널을 수정 또는 삭제가 가능하다 */}
       {channel.name !== 'general' && role !== MemberRole.GUEST && (
         <div className="ml-auto flex items-center gap-x-2">
-          <ActionTooltip label="Edit">
-            <EditIcon className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition" />
+          <ActionTooltip label="수정">
+            <EditIcon
+              onClick={() => onOpen('EDIT_CHANNEL', { server, channel })}
+              className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
+            />
           </ActionTooltip>
-          <ActionTooltip label="Edit">
-            <TrashIcon className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition" />
+          <ActionTooltip label="삭제">
+            <TrashIcon
+              onClick={() => onOpen('DELETE_CHANNEL', { server, channel })}
+              className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
+            />
           </ActionTooltip>
         </div>
       )}

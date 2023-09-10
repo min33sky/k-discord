@@ -254,3 +254,117 @@ export async function leaveServer(serverId: string) {
     throw new Error(error.message);
   }
 }
+
+interface EditChannelProps {
+  serverId: string;
+  channelId: string;
+  name: string;
+  type: ChannelType;
+}
+
+/**
+ * 채널 업데이트
+ * @param channelId 채널 아이디
+ * @param serverId 서버 아이디
+ * @param name 채널 이름
+ * @param type 채널 타입
+ */
+export async function updateChannel({
+  channelId,
+  name,
+  serverId,
+  type,
+}: EditChannelProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to edit a channel');
+    }
+
+    const updatedServer = await prisma.server.update({
+      where: {
+        id: serverId,
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          update: {
+            where: {
+              id: channelId,
+              NOT: {
+                name: 'general',
+              },
+            },
+            data: {
+              name,
+              type,
+            },
+          },
+        },
+      },
+    });
+
+    return updatedServer;
+  } catch (error: any) {
+    console.log('[editChannel] error : ', error);
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * 채널 삭제
+ * @param channelId
+ * @param serverId
+ */
+export async function deleteChannel({
+  channelId,
+  serverId,
+}: {
+  serverId: string;
+  channelId: string;
+}) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error('You must be logged in to delete a channel');
+    }
+
+    const updatedServer = await prisma.server.update({
+      where: {
+        id: serverId,
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          delete: {
+            id: channelId,
+            name: {
+              not: 'general',
+            },
+          },
+        },
+      },
+    });
+
+    return updatedServer;
+  } catch (error: any) {
+    console.log('[deleteChannel] error : ', error);
+    throw new Error(error.message);
+  }
+}

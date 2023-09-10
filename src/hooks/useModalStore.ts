@@ -1,4 +1,4 @@
-import { Server } from '@prisma/client';
+import { ChannelType, Server } from '@prisma/client';
 import { create } from 'zustand';
 
 export type ModalType =
@@ -11,7 +11,8 @@ export type ModalType =
   | 'DELETE_SERVER';
 
 interface ModalData {
-  server?: Server;
+  server?: Server; //? 현재 선택한 서버 데이터
+  channelType?: ChannelType;
 }
 
 interface ModalStore {

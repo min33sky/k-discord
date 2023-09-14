@@ -43,14 +43,18 @@ enum MemberRole {
 }
 
 model Member {
-  id        String     @id @default(uuid())
-  role      MemberRole @default(GUEST)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  profile   Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String
-  server    Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  serverId  String
+  id                    String          @id @default(uuid())
+  role                  MemberRole      @default(GUEST)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  profile               Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId             String
+  server                Server          @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  serverId              String
+  messages              Message[] // 채널에서 보낸 메세지 목록
+  conversationsInvited  Conversation[]  @relation("MemberOne") // DM 초대한 목록
+  conversationsReceived Conversation[]  @relation("MemberTwo") // DM 초대받은 목록
+  directMessages        DirectMessage[] // DM 메세지 목록
 
   @@index([profileId])
   @@index([serverId])
@@ -72,7 +76,57 @@ model Channel {
   profileId String
   server    Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
   serverId  String
+  messages  Message[]
 
   @@index([profileId])
   @@index([serverId])
+}
+
+// 채널에서 사용하는 메세지 모델
+model Message {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  fileUrl   String?  @db.Text
+  deleted   Boolean  @default(false) // soft delete
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  channelId String
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId  String
+
+  @@index([channelId])
+  @@index([memberId])
+}
+
+// 1:1 DM Model
+model Conversation {
+  id            String          @id @default(uuid())
+  memberOne     Member          @relation(name: "MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+  memberOneId   String
+  memberTwo     Member          @relation(name: "MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  memberTwoId   String
+  DirectMessage DirectMessage[]
+
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberOneId])
+  @@index([memberTwoId])
+}
+
+// DM에서 사용할 메세지 모델
+model DirectMessage {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  fileUrl   String?  @db.Text
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  member         Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId       String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+
+  @@index([memberId])
+  @@index([conversationId])
 }

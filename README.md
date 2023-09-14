@@ -1,6 +1,6 @@
-# K-Didcord
+# K-Discord
 
-Next13 (serverActions) + Clerk + Prisma + UploadThing
+Next13 (serverActions) + Clerk + Prisma + UploadThing + socket.io
 
 ## Environment Variables
 

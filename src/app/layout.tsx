@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import ModalProvider from '@/components/providers/modal-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import SocketProvider from '@/components/providers/socket-provider';
 
 export const metadata: Metadata = {
   title: 'K-Discord',
@@ -27,8 +28,10 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="discord-theme"
           >
-            <ModalProvider />
-            {children}
+            <SocketProvider>
+              <ModalProvider />
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>

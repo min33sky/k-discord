@@ -1,5 +1,6 @@
 import ChatHeader from '@/components/chat/chat-header';
 import ChatInput from '@/components/chat/chat-input';
+import ChatMessages from '@/components/chat/chat-messages';
 import { currentProfile } from '@/lib/current-profile';
 import prisma from '@/lib/db';
 import { redirectToSignIn } from '@clerk/nextjs';
@@ -46,7 +47,20 @@ export default async function ChannelIdPage({ params }: ChannelIdPageProps) {
       />
 
       {/* 메세지를 보여줄 영역 */}
-      <div className="flex-1">Future Message</div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        chatId={channel.id}
+        type="channel"
+        // apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
+        paramKey="channelId"
+        paramValue={channel.id}
+      />
 
       {/* 채팅 입력폼 */}
       <ChatInput

@@ -1,6 +1,6 @@
 # K-Discord
 
-Next13 (serverActions) + Clerk + Prisma + UploadThing + socket.io
+Next13 (serverActions) + Clerk + Prisma + UploadThing + socket.io + react-query
 
 ## Getting Started
 

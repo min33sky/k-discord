@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import ModalProvider from '@/components/providers/modal-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import SocketProvider from '@/components/providers/socket-provider';
+import QueryProvider from '@/components/providers/query-provider';
 
 export const metadata: Metadata = {
   title: 'K-Discord',
@@ -30,7 +31,7 @@ export default function RootLayout({
           >
             <SocketProvider>
               <ModalProvider />
-              {children}
+              <QueryProvider>{children}</QueryProvider>
             </SocketProvider>
           </ThemeProvider>
         </body>

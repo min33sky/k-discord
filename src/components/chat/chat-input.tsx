@@ -1,6 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import qs from 'query-string';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem } from '../ui/form';
@@ -36,9 +38,16 @@ export default function ChatInput({
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
     try {
-      //
+      const url = qs.stringifyUrl({
+        url: apiUrl,
+        query, //? serverId, channelId
+      });
+
+      const response = await axios.post(url, values);
+
+      console.log('채팅 전송 성공 : ', response.data);
     } catch (error) {
-      //
+      console.log('error: ', error);
     }
   };
 

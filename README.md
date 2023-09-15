@@ -2,6 +2,26 @@
 
 Next13 (serverActions) + Clerk + Prisma + UploadThing + socket.io
 
+## Getting Started
+
+1. install
+
+```bash
+pnpm i
+```
+
+2. DB Schema Generation
+
+```bash
+pnpm prisma generate
+```
+
+3. Start
+
+```bash
+pnpm dev
+```
+
 ## Environment Variables
 
 ```bash

@@ -9,6 +9,8 @@ import { Form, FormControl, FormField, FormItem } from '../ui/form';
 import { Input } from '../ui/input';
 import { PlusIcon, SmileIcon } from 'lucide-react';
 import { useModal } from '@/hooks/useModalStore';
+import { useRouter } from 'next/navigation';
+import EmojiPicker from '../emoji-picker';
 
 interface ChatInputProps {
   apiUrl: string;
@@ -28,6 +30,7 @@ export default function ChatInput({
   type,
 }: ChatInputProps) {
   const { onOpen } = useModal();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,6 +52,9 @@ export default function ChatInput({
       const response = await axios.post(url, values);
 
       console.log('채팅 전송 성공 : ', response.data);
+
+      form.reset();
+      router.refresh();
     } catch (error) {
       console.log('error: ', error);
     }
@@ -87,7 +93,11 @@ export default function ChatInput({
                   />
 
                   <div className="absolute top-7 right-8">
-                    <SmileIcon />
+                    <EmojiPicker
+                      onChange={(emoji) =>
+                        field.onChange(`${field.value} ${emoji}`)
+                      }
+                    />
                   </div>
                 </div>
               </FormControl>

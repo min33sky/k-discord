@@ -27,3 +27,34 @@ UPLOADTHING_APP_ID=
 1. **zod@3.21.4**를 설치하자
 
 - [링크](https://github.com/colinhacks/zod/issues/2663)
+
+2. ws관련 next.js Error (Can't resolve 'bufferutil' and 'utf-8-validate)
+
+- 다음 패키지 설치
+
+```bash
+npm install --save-dev utf-8-validate@5.0.10 bufferutil@4.0.7 supports-color@8.1.1
+```
+
+- next.config.js
+
+```js
+const nextConfig = {
+  reactStrictMode: true,
+};
+
+module.exports = {
+  ...nextConfig,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.externals.push({
+        bufferutil: 'bufferutil',
+        'utf-8-validate': 'utf-8-validate',
+        'supports-color': 'supports-color',
+      });
+    }
+
+    return config;
+  },
+};
+```

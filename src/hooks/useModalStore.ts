@@ -6,16 +6,21 @@ export type ModalType =
   | 'invite'
   | 'editServer'
   | 'members'
-  | 'CREATE_CHANNEL'
-  | 'LEAVE_SERVER'
-  | 'DELETE_SERVER'
-  | 'DELETE_CHANNEL'
-  | 'EDIT_CHANNEL';
+  | 'MESSAGE_FILE' // 채팅창 파일 업로드
+  | 'LEAVE_SERVER' // 서버 나가기
+  | 'DELETE_SERVER' // 서버 삭제
+  | 'CREATE_CHANNEL' // 채널 만들기
+  | 'DELETE_CHANNEL' // 채널 삭제
+  | 'EDIT_CHANNEL'; // 채널 수정
 
 interface ModalData {
   server?: Server; //? 현재 선택한 서버 데이터
   channel?: Channel;
   channelType?: ChannelType;
+
+  //! 테스트용
+  apiUrl?: string; // ? 임시 업로드용  (필요없으면 지움)
+  query?: Record<string, any>; // ? 임시 업로드용 (필요없으면 지움)
 }
 
 interface ModalStore {

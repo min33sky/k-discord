@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { XIcon } from 'lucide-react';
 import { Progress } from './ui/progress';
-import { set } from 'zod';
 
 interface FileUploadProps {
   onChange: (url?: string) => void; // Form onChange handler

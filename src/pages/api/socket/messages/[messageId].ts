@@ -14,11 +14,15 @@ export default async function handler(
 
   try {
     const profile = await currentProfilePages(req);
+
+    //? 메세지와 관련된 정보들을 URL Query에서 가져온다.
     const { messageId, serverId, channelId } = req.query as {
       messageId: string;
       serverId: string;
       channelId: string;
     };
+
+    //? 메세지 내용 (메세지 수정 요청일 때 필요한 정보)
     const { content } = req.body as {
       content: string;
     };
@@ -66,7 +70,7 @@ export default async function handler(
       return res.status(404).json({ error: 'Channel not found' });
     }
 
-    // 사용자 정보를 가져온다
+    // API를 호출 한 사용자의 정보를 가져온다
     const member = server.members.find(
       (member) => member.profileId === profile.id,
     );
@@ -95,6 +99,7 @@ export default async function handler(
       return res.status(404).json({ error: 'Message not found' });
     }
 
+    // API를 호출한 사용자의 권한을 확인한다.
     const isMessageOwner = message.memberId === member.id;
     const isAdmin = member.role === MemberRole.ADMIN;
     const isModerator = member.role === MemberRole.MODERATOR;
@@ -113,7 +118,7 @@ export default async function handler(
         },
         data: {
           fileUrl: null,
-          content: 'This message has been deleted.',
+          content: '이 메세지는 삭제되었습니다.',
           deleted: true,
         },
         include: {

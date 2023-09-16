@@ -22,6 +22,7 @@ export const DeleteMessageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
   const isModalOpen = isOpen && type === 'DELETE_MESSAGE';
+
   const { apiUrl, query } = data;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +35,7 @@ export const DeleteMessageModal = () => {
 
       const url = qs.stringifyUrl({
         url: apiUrl || '',
-        query,
+        query, //? serverId, channelId, messageId
       });
 
       const response = await axios.delete(url);

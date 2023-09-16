@@ -50,35 +50,29 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 - [링크](https://github.com/colinhacks/zod/issues/2663)
 
-2. ws관련 next.js Error (Can't resolve 'bufferutil' and 'utf-8-validate)
+2. ws관련 next.js Error (Can't resolve 'bufferutil' and 'utf-8-validate) 해결하기
 
-- 다음 패키지 설치
-
-```bash
-npm install --save-dev utf-8-validate@5.0.10 bufferutil@4.0.7 supports-color@8.1.1
-```
+- `next@13.4.12` 설치
 
 - next.config.js
 
 ```js
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-};
-
-module.exports = {
-  ...nextConfig,
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.externals.push({
-        bufferutil: 'bufferutil',
-        'utf-8-validate': 'utf-8-validate',
-        'supports-color': 'supports-color',
-      });
-    }
+  webpack: (config) => {
+    config.externals.push({
+      'utf-8-validate': 'commonjs utf-8-validate',
+      bufferutil: 'commonjs bufferutil',
+    });
 
     return config;
   },
+  images: {
+    domains: ['uploadthing.com'],
+  },
 };
+
+module.exports = nextConfig;
 ```
 
 3. `uploadthing` css 파일과 `pretendard` 폰트를 cdn에서 불러오는 코드가 충돌함. 일단 폰트 대체로 해결

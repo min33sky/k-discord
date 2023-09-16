@@ -17,7 +17,7 @@ export type GetChatMessagesResponse = {
 };
 
 /**
- * NextJS에서 Socket.io를 사용하기 위한 타입 확장
+ *? NextJS에서 Socket.io를 사용하기 위한 타입 확장
  */
 export type NextApiResponseServerIo = NextApiResponse & {
   socket: Socket & {

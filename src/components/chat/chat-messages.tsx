@@ -6,6 +6,11 @@ import { Loader2, ServerCrashIcon } from 'lucide-react';
 import React, { Fragment } from 'react';
 import ChatWelcome from './chat-welcome';
 import { MessageWithMemberWithProfile } from '@/types';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import ChatItem from './chat-item';
+
+const DATE_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
 interface ChatMessagesProps {
   name: string;
@@ -23,7 +28,7 @@ export default function ChatMessages({
   name,
   member,
   chatId,
-  apiUrl,
+  apiUrl, //! TODO: 삭제 예정
   socketUrl,
   socketQuery,
   paramKey,
@@ -69,7 +74,24 @@ export default function ChatMessages({
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
             {group?.items.map((message: MessageWithMemberWithProfile) => (
-              <div key={message.id}>{message.content}</div>
+              <ChatItem
+                key={message.id}
+                id={message.id}
+                currentMember={member}
+                member={message.member}
+                content={message.content}
+                fileUrl={message.fileUrl}
+                deleted={message.deleted}
+                timestamp={format(new Date(message.createdAt), DATE_FORMAT, {
+                  locale: ko,
+                })}
+                isUpdated={
+                  new Date(message.updatedAt).getTime() !==
+                  new Date(message.createdAt).getTime()
+                }
+                socketUrl={socketUrl}
+                socketQuery={socketQuery}
+              />
             ))}
           </Fragment>
         ))}

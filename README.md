@@ -80,3 +80,5 @@ module.exports = {
   },
 };
 ```
+
+3. `uploadthing` css 파일과 `pretendard` 폰트를 cdn에서 불러오는 코드가 충돌함. 일단 폰트 대체로 해결

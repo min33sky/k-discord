@@ -11,7 +11,8 @@ export type ModalType =
   | 'DELETE_SERVER' // 서버 삭제
   | 'CREATE_CHANNEL' // 채널 만들기
   | 'DELETE_CHANNEL' // 채널 삭제
-  | 'EDIT_CHANNEL'; // 채널 수정
+  | 'EDIT_CHANNEL' // 채널 수정
+  | 'DELETE_MESSAGE'; // 채팅 메세지 삭제
 
 interface ModalData {
   server?: Server; //? 현재 선택한 서버 데이터

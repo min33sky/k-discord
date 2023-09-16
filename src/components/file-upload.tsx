@@ -1,6 +1,6 @@
 'use client';
 
-import { UploadButton } from '@/lib/uploadthing';
+import { UploadButton, UploadDropzone } from '@/lib/uploadthing';
 import React, { useState } from 'react';
 
 import Image from 'next/image';
@@ -80,7 +80,7 @@ export default function FileUpload({
 
   return (
     <>
-      <UploadButton
+      {/* <UploadButton
         className="cursor-pointer ut-button:transition-colors ut-button:hover:bg-blue-600 ut-button:p-2 ut-button:ut-uploading:p-0 ut-button:bg-blue-500 ut-button:ut-readying:bg-blue-500/50"
         onUploadBegin={(temp) => {
           console.log('준비 : ', temp);
@@ -101,6 +101,15 @@ export default function FileUpload({
           // Do something with the error.
           console.log('upload error : ', error);
           setIsLoading(false);
+        }}
+      /> */}
+      <UploadDropzone
+        endpoint={endpoint}
+        onClientUploadComplete={(res) => {
+          onChange(res?.[0].url);
+        }}
+        onUploadError={(error: Error) => {
+          console.log(error);
         }}
       />
     </>

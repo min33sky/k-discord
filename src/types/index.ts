@@ -1,4 +1,10 @@
-import { Server, Member, Profile, Message } from '@prisma/client';
+import {
+  Server,
+  Member,
+  Profile,
+  Message,
+  DirectMessage,
+} from '@prisma/client';
 import { Server as NetServer, Socket } from 'net';
 import { NextApiResponse } from 'next';
 import { Server as SocketIOServer } from 'socket.io';
@@ -11,8 +17,17 @@ export type MessageWithMemberWithProfile = Message & {
   member: Member & { profile: Profile };
 };
 
+export type DirectMessageWithMemberWithProfile = DirectMessage & {
+  member: Member & { profile: Profile };
+};
+
 export type GetChatMessagesResponse = {
   items: MessageWithMemberWithProfile[];
+  nextCursor?: string;
+};
+
+export type GetDirectMessagesResponse = {
+  items: DirectMessageWithMemberWithProfile[];
   nextCursor?: string;
 };
 

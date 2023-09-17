@@ -1,6 +1,6 @@
-import { getChatMessages } from '@/actions/chat.action';
+import { getChatMessages, getDirectMessages } from '@/actions/chat.action';
 import { useSocket } from '@/components/providers/socket-provider';
-import { GetChatMessagesResponse } from '@/types';
+import { GetChatMessagesResponse, GetDirectMessagesResponse } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface ChatQueryProps {
@@ -19,6 +19,8 @@ export default function useChatQuery({
   const fetchMessages = async ({ pageParam = undefined }) => {
     const mode = paramKey === 'channelId' ? 'channelId' : 'conversation';
 
+    console.log('모ㅗㅗㅗㅗㅗㅗㅗㄷ, : ', mode);
+
     if (mode === 'channelId') {
       const response = (await getChatMessages({
         channelId: paramValue,
@@ -29,7 +31,14 @@ export default function useChatQuery({
 
       return response;
     } else {
-      // TODO: DM
+      const response = (await getDirectMessages({
+        conversationId: paramValue,
+        cursor: pageParam,
+      })) as GetDirectMessagesResponse;
+
+      console.log('다이렉트 메세지 가겨오기: ', response);
+
+      return response;
     }
   };
 

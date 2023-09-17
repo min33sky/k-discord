@@ -4,11 +4,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 type ChatSocketProps = {
-  addKey: string;
-  updateKey: string;
-  queryKey: string;
+  addKey: string; // 메세지 등록 시 사용할 Socket.io Key Name
+  updateKey: string; // 메세지 수정 시 사용할 Socket.io Key Name
+  queryKey: string; // react-query Key (캐시를 수정하기 위해 사용함)
 };
 
+/**
+ * 채팅 메세지 관련 socket.io 이벤트 처리를 담당하는 훅
+ */
 export default function useChatSocket({
   addKey,
   queryKey,

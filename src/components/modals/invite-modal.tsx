@@ -15,7 +15,7 @@ export default function InviteModal() {
   const { isOpen, onClose, type, data, onOpen } = useModal();
   const origin = useOrigin();
 
-  const isModalOpen = isOpen && type === 'invite';
+  const isModalOpen = isOpen && type === 'INVITE_MEMBER';
   const { server } = data;
 
   const [copied, setCopied] = useState(false);
@@ -48,7 +48,7 @@ export default function InviteModal() {
       const response = await updateServerInviteCode(server.id);
 
       // TODO: 모달 상태를 업데이트한다. onOpen()을 사용한다
-      onOpen('invite', {
+      onOpen('INVITE_MEMBER', {
         server: response,
       });
     } catch (error) {

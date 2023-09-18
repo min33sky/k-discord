@@ -10,7 +10,7 @@ import { PlusIcon, SettingsIcon } from 'lucide-react';
 interface ServerSectionProps {
   label: string;
   role?: MemberRole;
-  sectionType: 'channels' | 'members';
+  sectionType: 'channels' | 'MEMBERS';
   channelType?: ChannelType; // 채널 목록에서 사용
   server?: ServerWithMembersWithProfiles; // 맴버 목록에서 사용
 }
@@ -51,10 +51,10 @@ export default function ServerSection({
         </ActionTooltip>
       )}
 
-      {role === MemberRole.ADMIN && sectionType === 'members' && (
+      {role === MemberRole.ADMIN && sectionType === 'MEMBERS' && (
         <ActionTooltip label="맴버 관리" side="top">
           <button
-            onClick={() => onOpen('members', { server })}
+            onClick={() => onOpen('MEMBERS', { server })}
             className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
           >
             <SettingsIcon className="h-4 w-4" />

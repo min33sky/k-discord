@@ -56,7 +56,7 @@ export default function MembersModal() {
   const { isOpen, onClose, type, data, onOpen } = useModal();
   const [loadingId, setLoadingId] = useState('');
 
-  const isModalOpen = isOpen && type === 'members';
+  const isModalOpen = isOpen && type === 'MEMBERS';
   const { server } = data as {
     server: ServerWithMembersWithProfiles;
   };
@@ -69,7 +69,7 @@ export default function MembersModal() {
       const updatedServer = await kickMember(server.id, memberId);
 
       router.refresh();
-      onOpen('members', {
+      onOpen('MEMBERS', {
         server: updatedServer,
       });
 
@@ -102,7 +102,7 @@ export default function MembersModal() {
       router.refresh();
 
       // TODO: Modal 상태를 업데이트한다. onOpen()을 사용한다
-      onOpen('members', {
+      onOpen('MEMBERS', {
         server: updatedServer,
       });
     } catch (error) {

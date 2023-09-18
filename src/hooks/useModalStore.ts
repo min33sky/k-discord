@@ -2,10 +2,10 @@ import { Channel, ChannelType, Server } from '@prisma/client';
 import { create } from 'zustand';
 
 export type ModalType =
-  | 'createServer'
-  | 'invite'
-  | 'editServer'
-  | 'members'
+  | 'CREATE_SERVER'
+  | 'INVITE_MEMBER'
+  | 'EDIT_SERVER'
+  | 'MEMBERS'
   | 'MESSAGE_FILE' // 채팅창 파일 업로드
   | 'LEAVE_SERVER' // 서버 나가기
   | 'DELETE_SERVER' // 서버 삭제

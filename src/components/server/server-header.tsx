@@ -43,7 +43,7 @@ export default function ServerHeader({ server, role }: ServerHeaderProps) {
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
         {(isModerator || isAdmin) && (
           <DropdownMenuItem
-            onClick={() => onOpen('invite', { server })}
+            onClick={() => onOpen('INVITE_MEMBER', { server })}
             className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
           >
             초대하기
@@ -53,7 +53,7 @@ export default function ServerHeader({ server, role }: ServerHeaderProps) {
 
         {isAdmin && (
           <DropdownMenuItem
-            onClick={() => onOpen('editServer', { server })}
+            onClick={() => onOpen('EDIT_SERVER', { server })}
             className="px-3 py-2 text-sm cursor-pointer"
           >
             서버 설정
@@ -63,7 +63,7 @@ export default function ServerHeader({ server, role }: ServerHeaderProps) {
 
         {isAdmin && (
           <DropdownMenuItem
-            onClick={() => onOpen('members', { server })}
+            onClick={() => onOpen('MEMBERS', { server })}
             className="px-3 py-2 text-sm cursor-pointer"
           >
             맴버 관리

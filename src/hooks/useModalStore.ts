@@ -19,9 +19,11 @@ interface ModalData {
   channel?: Channel;
   channelType?: ChannelType;
 
-  //! 테스트용
-  apiUrl?: string; // ? 임시 업로드용  (필요없으면 지움)
-  query?: Record<string, any>; // ? 임시 업로드용 (필요없으면 지움)
+  /**
+   *? Socket IO API 호출할 때 필요한 값
+   */
+  apiUrl?: string;
+  query?: Record<string, any>;
 }
 
 interface ModalStore {

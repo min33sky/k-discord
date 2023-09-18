@@ -1,6 +1,6 @@
 'use client';
 
-import { UploadButton, UploadDropzone } from '@/lib/uploadthing';
+import { UploadDropzone } from '@/lib/uploadthing';
 import React, { useState } from 'react';
 
 import Image from 'next/image';
@@ -104,6 +104,11 @@ export default function FileUpload({
         }}
       /> */}
       <UploadDropzone
+        content={{
+          label({ ready }) {
+            return '이미지를 업로드하세요.';
+          },
+        }}
         endpoint={endpoint}
         onClientUploadComplete={(res) => {
           onChange(res?.[0].url);

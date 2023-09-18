@@ -1,6 +1,6 @@
 # K-Discord
 
-Next13 (serverActions) + Clerk + Prisma + UploadThing + socket.io + react-query
+Next13 (serverActions) + Clerk + Prisma + UploadThing + socket.io + react-query + LiveKit
 
 ## Getting Started
 
@@ -42,6 +42,10 @@ UPLOADTHING_APP_ID=
 
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
+# LiveKit
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+NEXT_PUBLIC_LIVEKIT_URL=
 ```
 
 ## Note
@@ -76,3 +80,7 @@ module.exports = nextConfig;
 ```
 
 3. `uploadthing` css 파일과 `pretendard` 폰트를 cdn에서 불러오는 코드가 충돌함. 일단 폰트 대체로 해결
+
+4. `vercel`이 아닌 `railway`를 이용해 배포함.
+
+- 이유는 `vercel`은 **serverless** 서비스라 `websocket`을 사용할 수 없다.

@@ -7,6 +7,14 @@ import InitialModal from '@/components/modals/initial-modal';
 export default async function SetupPage() {
   const profile = await initialProfile();
 
+  if (!profile) {
+    return (
+      <div className="flex items-center justify-center font-bold text-lg">
+        서버 에러.............................................
+      </div>
+    );
+  }
+
   const server = await prisma.server.findFirst({
     where: {
       members: {

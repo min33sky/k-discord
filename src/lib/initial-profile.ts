@@ -37,6 +37,6 @@ export async function initialProfile() {
     return newProfile;
   } catch (error: any) {
     console.log('[initialProfile] error : ', error);
-    throw new Error(error.message);
+    return null;
   }
 }

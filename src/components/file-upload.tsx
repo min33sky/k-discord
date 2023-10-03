@@ -1,16 +1,14 @@
 'use client';
 
-import { UploadDropzone } from '@/lib/uploadthing';
-import React, { useState } from 'react';
-
 import Image from 'next/image';
 import { FileIcon, XIcon } from 'lucide-react';
-import { Progress } from './ui/progress';
+import { OurFileRouter } from '@/app/api/uploadthing/core';
+import UploadDropzone from './upload-dropzone';
 
 interface FileUploadProps {
   onChange: (url?: string) => void; // Form onChange handler
   value: string; // Form value (File URL)
-  endpoint: 'messageFile' | 'serverImage'; // uploadthing endpoint
+  endpoint: keyof OurFileRouter; // uploadthing endpoint
 }
 
 export default function FileUpload({
@@ -18,26 +16,12 @@ export default function FileUpload({
   value,
   endpoint,
 }: FileUploadProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [progressValue, setProgressValue] = useState(0);
-
   /**
    * 기본적으로 이미지 업로드 존을 보여주고,
    * 업로드 완료 후에는 해당 이미지를 보여준다.
    */
 
   const fileType = value?.split('.').pop();
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col w-[200px]">
-        <Progress
-          value={progressValue}
-          className="w-full h-4 border border-blue-500 bg-blue-500 rounded-full overflow-hidden"
-        />
-      </div>
-    );
-  }
 
   if (value && fileType !== 'pdf') {
     return (
@@ -78,45 +62,5 @@ export default function FileUpload({
     );
   }
 
-  return (
-    <>
-      {/* <UploadButton
-        className="cursor-pointer ut-button:transition-colors ut-button:hover:bg-blue-600 ut-button:p-2 ut-button:ut-uploading:p-0 ut-button:bg-blue-500 ut-button:ut-readying:bg-blue-500/50"
-        onUploadBegin={(temp) => {
-          console.log('준비 : ', temp);
-          setIsLoading(true);
-        }}
-        onUploadProgress={(progress) => {
-          console.log('진행 : ', progress);
-          setProgressValue(progress);
-        }}
-        endpoint={endpoint}
-        onClientUploadComplete={(res) => {
-          // Do something with the response
-          console.log('upload File : ', res);
-          onChange(res?.[0].url);
-          setIsLoading(false);
-        }}
-        onUploadError={(error: Error) => {
-          // Do something with the error.
-          console.log('upload error : ', error);
-          setIsLoading(false);
-        }}
-      /> */}
-      <UploadDropzone
-        content={{
-          label({ ready }) {
-            return '이미지를 업로드하세요.';
-          },
-        }}
-        endpoint={endpoint}
-        onClientUploadComplete={(res) => {
-          onChange(res?.[0].url);
-        }}
-        onUploadError={(error: Error) => {
-          console.log(error);
-        }}
-      />
-    </>
-  );
+  return <UploadDropzone endpoint={endpoint} callback={onChange} />;
 }
